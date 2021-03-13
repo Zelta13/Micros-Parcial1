@@ -17,57 +17,57 @@ z equ 0x35
 a equ 0x36
 c equ 0x37
 d equ 0x38
- ;inicio del programa:
+ 
 START
-    MOVLW 0x07 ;Apagar comparadores
+    MOVLW 0x07 
     MOVWF CMCON
-    BCF STATUS, RP1 ;Cambiar al banco 1
+    BCF STATUS, RP1 
     BSF STATUS, RP0
-    MOVLW b'00000010' ;Establecer puerto B como salida (los 8 bits del puerto)
+    MOVLW b'00000010' 
     MOVWF TRISB
-    BCF STATUS, RP0 ;Regresar al banco 0
+    BCF STATUS, RP0 
     NOP
 inicio:
     BTFSC PORTB,1
     GOTO $+6
     bcf PORTB,0
-    call tiempo3
+    call t3
     nop
     bsf PORTB,0
-    call tiempo3
+    call t3
     BTFSS PORTB,1
     GOTO inicio   
-    bcf PORTB,0  ;poner el puerto B0 (bit 0 del puerto B) en 0
-    call tiempo1 ;llamar a la rutina de tiempo
-    call tiempo2
+    bcf PORTB,0  
+    call t1 
+    call t2
     movlw d'3'
     movwf cont
     DECFSZ cont,f
     goto $-1
-    bsf PORTB,0  ;poner el puerto B0 (bit 0 del puerto B) en 1
-    call tiempo1 ;llamar a la rutina de tiempo
-    call tiempo2
+    bsf PORTB,0  
+    call t1 
+    call t2
     movlw d'2'
     movwf cont
     DECFSZ cont,f
     goto $-1
     nop
-    goto inicio  ;regresar y repetir
+    goto inicio  
  
-tiempo3:
-movlw d'27' ;establecer valor de la variable i
+t3:
+movlw d'27' 
 movwf a
 aloop:
-nop ;NOPs de relleno (ajuste de tiempo)
 nop
 nop
 nop
 nop
-movlw d'50' ;establecer valor de la variable j
+nop
+movlw d'50' 
 movwf c
 cloop:
-nop ;NOPs de relleno (ajuste de tiempo)
-movlw d'60' ;establecer valor de la variable k
+nop 
+movlw d'60' 
 movwf d
 dloop:
 decfsz d,f
@@ -76,25 +76,24 @@ decfsz c,f
 goto cloop
 decfsz a,f
 goto aloop
-return ;salir de la rutina de tiempo y regresar al
-;valor de contador de programa
+return 
    
-tiempo2:
-nop ;NOPs de relleno (ajuste de tiempo)
+t2:
+nop 
 nop
-movlw d'54' ;establecer valor de la variable i
+movlw d'54' 
 movwf x
 xloop:
-nop ;NOPs de relleno (ajuste de tiempo)
+nop 
 nop
 nop
 nop
 nop
-movlw d'50' ;establecer valor de la variable j
+movlw d'50' 
 movwf y
 yloop:
-nop ;NOPs de relleno (ajuste de tiempo)
-movlw d'60' ;establecer valor de la variable k
+nop 
+movlw d'60' 
 movwf z
 zloop:
 decfsz z,f
@@ -103,12 +102,10 @@ decfsz y,f
 goto yloop
 decfsz x,f
 goto xloop
-return ;salir de la rutina de tiempo y regresar al
-;valor de contador de programa
+return 
 
-;rutina de tiempo
-tiempo1:
-    movlw d'100' ;establecer valor de la variable i
+t1:
+    movlw d'100' 
     movwf i
 iloop:
     nop
@@ -116,14 +113,14 @@ iloop:
     nop
     nop
     nop
-    movlw d'54' ;establecer valor de la variable j
+    movlw d'54'
     movwf j
 jloop:
     nop
     nop
     nop
     nop
-    movlw d'59' ;establecer valor de la variable k
+    movlw d'59'
     movwf k
 kloop:   
     decfsz k,f
@@ -136,6 +133,5 @@ kloop:
     movwf j
     decfsz j,f
     goto $-1
-    return    ;salir de la rutina de tiempo y regresar al
-        ;valor de contador de programa
+    return    
     END
